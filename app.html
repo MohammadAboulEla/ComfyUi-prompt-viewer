@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>PNG Metadata Viewer</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="nav-bar">
+      <button id="selectButton">Load ComfyUI PNG Images</button>
+      <h4 id="loadedCount"></h4>
+    </div>
+    <input
+      type="file"
+      id="fileInput"
+      multiple
+      accept="image/png"
+      style="display: none"
+    />
+    <!-- Container for cards -->
+    <div id="cardContainer"></div>
+
+    <script>
+      let files = null;
+      function getCard(imageSrc, title, description) {
+        return `
+          <div class="card">
+            <div class="card-content-left">
+              <img src="${imageSrc}" alt="Card Image" class="card-image" />
+              <h4>${title}</h4>
+              </div>
+            <div class="card-content">
+              <p>${description}</p>
+            </div>
+          </div>
+        `;
+      }
+
+      document.getElementById("selectButton").onclick = () => {
+        document.getElementById("fileInput").click();
+      };
+
+
+      async function loadFileAsBlob(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsArrayBuffer(file);
+        });
+      }
+
+      function readMetadata(arrayBuffer) {
+        const metadata = {};
+        const uint8 = new Uint8Array(arrayBuffer);
+        const textDecoder = new TextDecoder("utf-8");
+
+        // Loop through chunks to find metadata
+        let pos = 8;
+        while (pos < uint8.length) {
+          const length = new DataView(arrayBuffer, pos, 4).getUint32(0);
+          const chunkType = textDecoder.decode(uint8.slice(pos + 4, pos + 8));
+          if (chunkType === "tEXt") {
+            const textData = uint8.slice(pos + 8, pos + 8 + length);
+            const keyValue = textDecoder.decode(textData).split("\x00");
+            if (keyValue.length === 2) {
+              metadata[keyValue[0]] = keyValue[1];
+            }
+          }
+          pos += 12 + length; // Move to next chunk
+        }
+
+        const jsonString = metadata["prompt"];
+        const data = JSON.parse(jsonString);
+        return data;
+      }
+
+      function findLongestString(strings) {
+        return strings.reduce((longest, current) =>
+          current.length > longest.length ? current : longest
+        );
+      }
+
+      function extractKeys(data) {
+        const keys = ["text", "text_positive"];
+        const results = [];
+
+        for (const key in data) {
+          const inputs = data[key].inputs;
+
+          if (inputs.text && typeof inputs.text === "string") {
+            results.push(inputs.text);
+          }
+
+          if (
+            inputs.text_positive &&
+            typeof inputs.text_positive === "string"
+          ) {
+            results.push(inputs.text_positive);
+          }
+        }
+
+        //return JSON.stringify(results[0]);
+        text = findLongestString(results)
+        return text;
+      }
+
+      document.getElementById("fileInput").onchange = async (event) => {
+        files = event.target.files;
+        update(files);
+      };
+
+      async function update(files) {
+        const loadedCount = document.getElementById("loadedCount");
+        const cardContainer = document.getElementById("cardContainer");
+        cardContainer.innerHTML = ""; // Clear previous entries
+
+        loadedCount.innerHTML = `${files.length} Images Loaded`;
+
+
+        for (const file of files) {
+          if (file.name.endsWith(".png")) {
+            try {
+              const arrayBuffer = await loadFileAsBlob(file);
+              const metadata = readMetadata(arrayBuffer);
+
+              const imageSrc = URL.createObjectURL(file);
+              const title = file.name //.replace(".png", "");
+              const description = extractKeys(metadata);
+
+              // Append card to the container
+              cardContainer.innerHTML += getCard(imageSrc, title, description);
+            } catch (error) {
+              console.error(
+                `Error processing file ${file.name}: ${error.message}`
+              );
+              continue; // Skip this file and continue with the next one
+            }
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

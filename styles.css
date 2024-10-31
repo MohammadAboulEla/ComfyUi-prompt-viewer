@@ -1,0 +1,76 @@
+* {
+  margin: 0px;
+  padding: 0;
+}
+.nav-bar{
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  /* margin: 5px; */
+}
+
+.nav-bar h4{
+  font-size: 1.1rem;
+  padding: 5px;
+}
+
+body {
+  background-color: #181818;
+  color: gainsboro;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+    sans-serif;
+  font-weight: 800;
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+}
+button {
+  font-family: inherit;
+  font-weight: inherit;
+  font-size: 1.1rem;
+  border-radius: 5px;
+  background-color: crimson;
+  color: aliceblue;
+  height: 30px;
+  padding: 1px 10px;
+}
+
+.card {
+    background-color: #393939;    display: flex;
+    max-width: 100%;
+    border: 0px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    margin: 5px;
+    padding: 10px;
+  }
+  
+  /* .card:hover {
+    background-color: #424242; 
+  }
+   */
+   
+  .card-image {
+    /* margin: 10px 10px 0px 10px; */
+    width: 300px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+  
+  .card-content-left h4 {
+    font-size: 0.8em;
+    text-align: center;
+  }
+  
+  .card-content p {
+    margin-left: 10px;
+    
+    text-align: left;
+    color: #d7d7d7;
+    font-size: 1.2em;
+    line-height: 1.2;
+  }
+  
