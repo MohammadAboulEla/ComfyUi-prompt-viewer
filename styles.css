@@ -95,3 +95,35 @@ button {
   background-color: #555; /* Color when hovered */
 }
   
+.fullscreen-toggle {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.fullscreen-toggle:hover {
+  transform: scale(1.02);
+}
+
+/* Style for fullscreen mode */
+.fullscreen-toggle:fullscreen {
+  object-fit: contain;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+}
+
+/* For Safari */
+.fullscreen-toggle:-webkit-full-screen {
+  object-fit: contain;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+}
+
+/* For IE11 */
+.fullscreen-toggle:-ms-fullscreen {
+  object-fit: contain;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+}

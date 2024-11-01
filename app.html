@@ -40,12 +40,12 @@
               const metadata = readMetadata(arrayBuffer);
 
               const imageSrc = URL.createObjectURL(file);
-              const title = file.name //.replace(".png", "");
+              const title = file.name; //.replace(".png", "");
               const description = extractKeys(metadata);
 
               // Append card to the container
               cardContainer.innerHTML += getCard(imageSrc, title, description);
-              loadedFiles +=1;
+              loadedFiles += 1;
             } catch (error) {
               continue; // Skip this file and continue with the next one
               console.error(
@@ -57,11 +57,37 @@
         loadedCount.innerHTML = `${loadedFiles} Images Loaded`;
       }
 
+      document.addEventListener("click", function (e) {
+        if (e.target.classList.contains("fullscreen-toggle")) {
+          if (!document.fullscreenElement) {
+            if (e.target.requestFullscreen) {
+              e.target.requestFullscreen();
+            } else if (e.target.webkitRequestFullscreen) {
+              /* Safari */
+              e.target.webkitRequestFullscreen();
+            } else if (e.target.msRequestFullscreen) {
+              /* IE11 */
+              e.target.msRequestFullscreen();
+            }
+          } else {
+            if (document.exitFullscreen) {
+              document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+              /* Safari */
+              document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+              /* IE11 */
+              document.msExitFullscreen();
+            }
+          }
+        }
+      });
+
       function getCard(imageSrc, title, description) {
         return `
           <div class="card">
             <div class="card-content-left">
-              <img src="${imageSrc}" alt="Card Image" class="card-image" />
+              <img src="${imageSrc}" alt="${title}" class="card-image fullscreen-toggle" />
               <h4>${title}</h4>
               </div>
             <div class="card-content">
@@ -131,7 +157,7 @@
         }
 
         //return JSON.stringify(results[0]);
-        text = findLongestString(results)
+        text = findLongestString(results);
         return text;
       }
 
@@ -139,7 +165,6 @@
         files = event.target.files;
         update(files);
       };
-
     </script>
   </body>
 </html>
