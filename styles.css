@@ -101,7 +101,6 @@ button {
   /* Custom scrollbar styling */
 .card-content p::-webkit-scrollbar {
   width: 8px; /* Width of the scrollbar */
-}
 
 .card-content p::-webkit-scrollbar-track {
   background: #f1f1f1; /* Track color */
