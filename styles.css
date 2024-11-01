@@ -3,12 +3,6 @@
   padding: 0;
 }
 
-#cardContainer {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(46.5vw, 1fr)); /* Each card takes half of the screen width */
-  gap: 5px;
-}
-
 .nav-bar{
   display: flex;
   align-items: center;
@@ -27,7 +21,7 @@ body {
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
     sans-serif;
   font-weight: 800;
-  width: 95%;
+  width: 99%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -39,10 +33,27 @@ button {
   background-color: crimson;
   color: aliceblue;
   height: 30px;
-  padding: 1px 10px;
+  padding: 0px 10px 2px;;
+}
+
+.btn-copy{
+  background-color: transparent;
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  margin: 10px;
+  padding: 0px 10px 10px;
+}
+
+#cardContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(48.5vw, 1fr)); /* Each card takes half of the screen width */
+  gap: 5px;
 }
 
 .card {
+    position: relative;
+    display: flex;
     background-color: #393939;    display: flex;
     max-width: 100%;
     min-height: 320px;
@@ -75,10 +86,12 @@ button {
   }
   
   .card-content p {
+    padding-right: 5px;
     margin-left: 10px;
     min-height: 250px;
-    max-height: 300px;
+    max-height: 360px;
     overflow-y: auto; /* Makes the description scrollable */
+    overflow-x: hidden;
     text-align: left;
     color: #d7d7d7;
     font-size: 1.2em;

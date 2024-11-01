@@ -32,7 +32,7 @@
         loadedFiles = 0;
         const loadedCount = document.getElementById("loadedCount");
         loadedCount.innerHTML = "Loading...";
-        
+
         const cardContainer = document.getElementById("cardContainer");
         cardContainer.innerHTML = ""; // Clear previous entries
 
@@ -69,9 +69,22 @@
               </div>
             <div class="card-content">
               <p>${description}</p>
+              <button class="btn-copy" onclick="copyToClipboard('${description}')">📋</button>
             </div>
           </div>
         `;
+      }
+
+      // Copy function
+      function copyToClipboard(text) {
+        navigator.clipboard
+          .writeText(text)
+          .then(() => {
+            //alert("Description copied to clipboard!");
+          })
+          .catch((err) => {
+            console.error("Error copying text: ", err);
+          });
       }
 
       async function loadFileAsBlob(file) {
