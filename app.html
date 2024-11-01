@@ -24,6 +24,39 @@
       let files = null;
       let loadedFiles = 0;
 
+      document.getElementById("selectButton").onclick = () => {
+        document.getElementById("fileInput").click();
+      };
+
+      async function update(files) {
+        const loadedCount = document.getElementById("loadedCount");
+        const cardContainer = document.getElementById("cardContainer");
+        cardContainer.innerHTML = ""; // Clear previous entries
+
+        for (const file of files) {
+          if (file.name.endsWith(".png")) {
+            try {
+              const arrayBuffer = await loadFileAsBlob(file);
+              const metadata = readMetadata(arrayBuffer);
+
+              const imageSrc = URL.createObjectURL(file);
+              const title = file.name //.replace(".png", "");
+              const description = extractKeys(metadata);
+
+              // Append card to the container
+              cardContainer.innerHTML += getCard(imageSrc, title, description);
+              loadedFiles +=1;
+            } catch (error) {
+              continue; // Skip this file and continue with the next one
+              console.error(
+                `Error processing file ${file.name}: ${error.message}`
+              );
+            }
+          }
+        }
+        loadedCount.innerHTML = `${loadedFiles} Images Loaded`;
+      }
+
       function getCard(imageSrc, title, description) {
         return `
           <div class="card">
@@ -37,11 +70,6 @@
           </div>
         `;
       }
-
-      document.getElementById("selectButton").onclick = () => {
-        document.getElementById("fileInput").click();
-      };
-
 
       async function loadFileAsBlob(file) {
         return new Promise((resolve, reject) => {
@@ -112,34 +140,6 @@
         update(files);
       };
 
-      async function update(files) {
-        const loadedCount = document.getElementById("loadedCount");
-        const cardContainer = document.getElementById("cardContainer");
-        cardContainer.innerHTML = ""; // Clear previous entries
-
-        for (const file of files) {
-          if (file.name.endsWith(".png")) {
-            try {
-              const arrayBuffer = await loadFileAsBlob(file);
-              const metadata = readMetadata(arrayBuffer);
-
-              const imageSrc = URL.createObjectURL(file);
-              const title = file.name //.replace(".png", "");
-              const description = extractKeys(metadata);
-
-              // Append card to the container
-              cardContainer.innerHTML += getCard(imageSrc, title, description);
-              loadedFiles +=1;
-            } catch (error) {
-              continue; // Skip this file and continue with the next one
-              console.error(
-                `Error processing file ${file.name}: ${error.message}`
-              );
-            }
-          }
-        }
-        loadedCount.innerHTML = `${loadedFiles} Images Loaded`;
-      }
     </script>
   </body>
 </html>
