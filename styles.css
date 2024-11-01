@@ -74,8 +74,8 @@ button {
    
   .card-image {
     /* margin: 10px 10px 0px 10px; */
-    width: 380px;
-    height: 380px;
+    width: 360px;
+    height: 360px;
     object-fit: cover;
     border-radius: 5px;
   }
@@ -89,7 +89,7 @@ button {
     padding-right: 5px;
     margin-left: 10px;
     min-height: 250px;
-    max-height: 360px;
+    max-height: 340px;
     overflow-y: auto; /* Makes the description scrollable */
     overflow-x: hidden;
     text-align: left;

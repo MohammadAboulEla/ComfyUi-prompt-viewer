@@ -118,6 +118,7 @@
 
         const jsonString = metadata["prompt"];
         const data = JSON.parse(jsonString);
+        console.log(data);
         return data;
       }
 
@@ -128,26 +129,21 @@
       }
 
       function extractKeys(data) {
-        const keys = ["text", "text_positive"];
+        const keys = ["text", "text_positive", "text_g", "text_l", "t5xxl"];
         const results = [];
 
         for (const key in data) {
           const inputs = data[key].inputs;
 
-          if (inputs.text && typeof inputs.text === "string") {
-            results.push(inputs.text);
-          }
-
-          if (
-            inputs.text_positive &&
-            typeof inputs.text_positive === "string"
-          ) {
-            results.push(inputs.text_positive);
-          }
+          keys.forEach((option) => {
+            if (inputs[option] && typeof inputs[option] === "string") {
+              results.push(inputs[option]);
+            }
+          });
         }
 
-        //return JSON.stringify(results[0]);
-        text = findLongestString(results);
+        // Use the longest string found
+        const text = findLongestString(results);
         return text;
       }
 
