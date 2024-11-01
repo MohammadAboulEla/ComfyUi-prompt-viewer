@@ -22,6 +22,8 @@
 
     <script>
       let files = null;
+      let loadedFiles = 0;
+
       function getCard(imageSrc, title, description) {
         return `
           <div class="card">
@@ -115,9 +117,6 @@
         const cardContainer = document.getElementById("cardContainer");
         cardContainer.innerHTML = ""; // Clear previous entries
 
-        loadedCount.innerHTML = `${files.length} Images Loaded`;
-
-
         for (const file of files) {
           if (file.name.endsWith(".png")) {
             try {
@@ -130,14 +129,16 @@
 
               // Append card to the container
               cardContainer.innerHTML += getCard(imageSrc, title, description);
+              loadedFiles +=1;
             } catch (error) {
+              continue; // Skip this file and continue with the next one
               console.error(
                 `Error processing file ${file.name}: ${error.message}`
               );
-              continue; // Skip this file and continue with the next one
             }
           }
         }
+        loadedCount.innerHTML = `${loadedFiles} Images Loaded`;
       }
     </script>
   </body>
