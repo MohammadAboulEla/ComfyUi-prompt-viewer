@@ -118,7 +118,7 @@
 
         const jsonString = metadata["prompt"];
         const data = JSON.parse(jsonString);
-        console.log(data);
+        //console.log(data);
         return data;
       }
 
@@ -129,7 +129,7 @@
       }
 
       function extractKeys(data) {
-        const keys = ["text", "text_positive", "text_g", "text_l", "t5xxl"];
+        const keys = ["text", "text_positive","positive", "text_g", "text_l", "t5xxl"];
         const results = [];
 
         for (const key in data) {
