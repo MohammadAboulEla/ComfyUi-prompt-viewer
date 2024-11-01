@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-fullscreen-instruction">
   <head>
     <meta charset="UTF-8" />
     <title>PNG Metadata Viewer</title>
@@ -29,7 +29,10 @@
       };
 
       async function update(files) {
+        loadedFiles = 0;
         const loadedCount = document.getElementById("loadedCount");
+        loadedCount.innerHTML = "Loading...";
+        
         const cardContainer = document.getElementById("cardContainer");
         cardContainer.innerHTML = ""; // Clear previous entries
 
@@ -56,32 +59,6 @@
         }
         loadedCount.innerHTML = `${loadedFiles} Images Loaded`;
       }
-
-      document.addEventListener("click", function (e) {
-        if (e.target.classList.contains("fullscreen-toggle")) {
-          if (!document.fullscreenElement) {
-            if (e.target.requestFullscreen) {
-              e.target.requestFullscreen();
-            } else if (e.target.webkitRequestFullscreen) {
-              /* Safari */
-              e.target.webkitRequestFullscreen();
-            } else if (e.target.msRequestFullscreen) {
-              /* IE11 */
-              e.target.msRequestFullscreen();
-            }
-          } else {
-            if (document.exitFullscreen) {
-              document.exitFullscreen();
-            } else if (document.webkitExitFullscreen) {
-              /* Safari */
-              document.webkitExitFullscreen();
-            } else if (document.msExitFullscreen) {
-              /* IE11 */
-              document.msExitFullscreen();
-            }
-          }
-        }
-      });
 
       function getCard(imageSrc, title, description) {
         return `
@@ -165,6 +142,56 @@
         files = event.target.files;
         update(files);
       };
+
+      document.addEventListener("click", function (e) {
+        if (e.target.classList.contains("fullscreen-toggle")) {
+          if (!document.fullscreenElement) {
+            if (e.target.requestFullscreen) {
+              e.target.requestFullscreen();
+            } else if (e.target.webkitRequestFullscreen) {
+              /* Safari */
+              e.target.webkitRequestFullscreen();
+            } else if (e.target.msRequestFullscreen) {
+              /* IE11 */
+              e.target.msRequestFullscreen();
+            }
+          } else {
+            if (document.exitFullscreen) {
+              document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+              /* Safari */
+              document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+              /* IE11 */
+              document.msExitFullscreen();
+            }
+          }
+        }
+      });
+
+      document.addEventListener("keydown", function (e) {
+        if (document.fullscreenElement) {
+          if (e.key === "ArrowRight") {
+            // Go to next image
+            const images = document.querySelectorAll(".fullscreen-toggle");
+            const currentIndex = Array.from(images).indexOf(
+              document.fullscreenElement
+            );
+            if (currentIndex < images.length - 1) {
+              images[currentIndex + 1].requestFullscreen();
+            }
+          } else if (e.key === "ArrowLeft") {
+            // Go to previous image
+            const images = document.querySelectorAll(".fullscreen-toggle");
+            const currentIndex = Array.from(images).indexOf(
+              document.fullscreenElement
+            );
+            if (currentIndex > 0) {
+              images[currentIndex - 1].requestFullscreen();
+            }
+          }
+        }
+      });
     </script>
   </body>
 </html>

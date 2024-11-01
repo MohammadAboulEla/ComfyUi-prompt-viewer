@@ -68,6 +68,7 @@ button {
   
   .card-content p {
     margin-left: 10px;
+    min-height: 250px;
     max-height: 370px;
     overflow-y: auto; /* Makes the description scrollable */
     text-align: left;
@@ -101,7 +102,7 @@ button {
 }
 
 .fullscreen-toggle:hover {
-  transform: scale(1.02);
+  transform: scale(1.01);
 }
 
 /* Style for fullscreen mode */
